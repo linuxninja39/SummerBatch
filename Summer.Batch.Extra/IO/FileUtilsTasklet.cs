@@ -58,7 +58,7 @@ namespace Summer.Batch.Extra.IO
     ///         <description>Creates new empty files, overwriting any existing file</description>
     ///     </item>
     ///     <item>
-    ///         <term>COMPARE</term>
+    ///         <term>Compare</term>
     ///         <description>Compare two files for equality</description>
     ///     </item>
     /// </list>
