@@ -38,23 +38,23 @@ namespace Summer.Batch.Extra.IO
     /// 
     /// <list type="bullet">
     ///     <item>
-    ///         <term>COPY</term>
+    ///         <term>Copy</term>
     ///         <description>copies file to another location</description>
     ///     </item>
     ///     <item>
-    ///         <term>DELETE</term>
+    ///         <term>Delete</term>
     ///         <description>deletes a list of files</description>
     ///     </item>
     ///     <item>
-    ///         <term>MERGE</term>
+    ///         <term>Merge</term>
     ///         <description>appends the source files to the target file</description>
     ///     </item>
     ///     <item>
-    ///         <term>MERGE_COPY</term>
+    ///         <term>MergeCopy</term>
     ///         <description>merges the source files to the target file (which is overwritten if it exists)</description>
     ///     </item>
     ///     <item>
-    ///         <term>RESET</term>
+    ///         <term>Reset</term>
     ///         <description>Creates new empty files, overwriting any existing file</description>
     ///     </item>
     ///     <item>
