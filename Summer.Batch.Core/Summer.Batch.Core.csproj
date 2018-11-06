@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Core\BatchStatus.cs" />
     <Compile Include="Core\Configuration\DuplicateJobException.cs" />
+    <Compile Include="Core\Configuration\IJobConfigurator.cs" />
     <Compile Include="Core\Configuration\IJobFactory.cs" />
     <Compile Include="Core\Configuration\IJobLocator.cs" />
     <Compile Include="Core\Configuration\IJobRegistry.cs" />
