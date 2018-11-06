@@ -41,10 +41,15 @@ namespace Summer.Batch.Core
         public static JobExecution Start(string xmlJobFile, UnityLoader loader)
         {
             var job = XmlJobParser.LoadJob(xmlJobFile);
+            return Start(job, loader);
+        }
+
+        public static JobExecution Start(XmlJob job, UnityLoader loader)
+        {
             loader.Job = job;
-            var jobOperator = (SimpleJobOperator)BatchRuntime.GetJobOperator(loader);
+            var jobOperator = (SimpleJobOperator) BatchRuntime.GetJobOperator(loader);
             var executionId = jobOperator.StartNextInstance(job.Id);
-            return jobOperator.JobExplorer.GetJobExecution((long)executionId);
+            return jobOperator.JobExplorer.GetJobExecution((long) executionId);
         }
 
         /// <summary>
@@ -57,15 +62,16 @@ namespace Summer.Batch.Core
         {
             var job = XmlJobParser.LoadJob(xmlJobFile);
             loader.Job = job;
-            var jobOperator = (SimpleJobOperator)BatchRuntime.GetJobOperator(loader);
+            var jobOperator = (SimpleJobOperator) BatchRuntime.GetJobOperator(loader);
             var jobExecution = GetLastFailedJobExecution(job.Id, jobOperator.JobExplorer);
             if (jobExecution == null)
             {
                 throw new JobExecutionNotFailedException(
-                    String.Format("No failed or stopped execution found for job={0}" , job.Id));
+                    String.Format("No failed or stopped execution found for job={0}", job.Id));
             }
+
             var executionId = jobOperator.Restart(jobExecution.Id.Value);
-            return jobOperator.JobExplorer.GetJobExecution((long)executionId);
+            return jobOperator.JobExplorer.GetJobExecution((long) executionId);
         }
 
         /// <summary>
@@ -77,18 +83,20 @@ namespace Summer.Batch.Core
         {
             var job = XmlJobParser.LoadJob(xmlJobFile);
             loader.Job = job;
-            var jobOperator = (SimpleJobOperator)BatchRuntime.GetJobOperator(loader);
+            var jobOperator = (SimpleJobOperator) BatchRuntime.GetJobOperator(loader);
             var jobExecutions = GetRunningJobExecutions(job.Id, jobOperator.JobExplorer);
             if (jobExecutions == null || !jobExecutions.Any())
             {
                 throw new JobExecutionNotFailedException(
                     string.Format("No running execution found for job={0}", job.Id));
             }
+
             foreach (var jobExecution in jobExecutions)
             {
                 jobExecution.Status = BatchStatus.Stopping;
                 jobOperator.JobRepository.Update(jobExecution);
             }
+
             Logger.Info("Job {0} was stopped.", job.Id);
         }
 
@@ -101,18 +109,20 @@ namespace Summer.Batch.Core
         {
             var job = XmlJobParser.LoadJob(xmlJobFile);
             loader.Job = job;
-            var jobOperator = (SimpleJobOperator)BatchRuntime.GetJobOperator(loader);
+            var jobOperator = (SimpleJobOperator) BatchRuntime.GetJobOperator(loader);
             var jobExecutions = GetStoppedJobExecutions(job.Id, jobOperator.JobExplorer);
             if (jobExecutions == null || !jobExecutions.Any())
             {
                 throw new JobExecutionNotFailedException(
                     String.Format("No stopped execution found for job={0}", job.Id));
             }
+
             foreach (var jobExecution in jobExecutions)
             {
                 jobExecution.Status = BatchStatus.Abandoned;
                 jobOperator.JobRepository.Update(jobExecution);
             }
+
             Logger.Info("Job {0} was abandoned.", job.Id);
         }
 
@@ -131,6 +141,7 @@ namespace Summer.Batch.Core
             {
                 return null;
             }
+
             return jobExecutions[0];
         }
 
@@ -149,6 +160,7 @@ namespace Summer.Batch.Core
             {
                 return null;
             }
+
             return jobExecutions.Where(jobExecution => jobExecution.IsRunning()).ToList();
         }
 
@@ -167,6 +179,7 @@ namespace Summer.Batch.Core
             {
                 return null;
             }
+
             return jobExecutions.Where(jobExecution => jobExecution.Status != BatchStatus.Abandoned).ToList();
         }
 
@@ -195,17 +208,18 @@ namespace Summer.Batch.Core
         /// <param name="minStatus"></param>
         /// <param name="jobExplorer"></param>
         /// <returns></returns>
-        private static List<JobExecution> GetJobExecutionsWithStatusGreaterThan(string jobIdentifier, BatchStatus minStatus, IJobExplorer jobExplorer)
+        private static List<JobExecution> GetJobExecutionsWithStatusGreaterThan(string jobIdentifier,
+            BatchStatus minStatus, IJobExplorer jobExplorer)
         {
-
             long? executionId = GetLongIdentifier(jobIdentifier);
             if (executionId != null)
             {
                 JobExecution jobExecution = jobExplorer.GetJobExecution(executionId.Value);
                 if (jobExecution.Status.IsGreaterThan(minStatus))
                 {
-                    return new List<JobExecution> { jobExecution };
+                    return new List<JobExecution> {jobExecution};
                 }
+
                 //empmty list
                 return new List<JobExecution>();
             }
@@ -217,7 +231,6 @@ namespace Summer.Batch.Core
 
             while (lastInstances.Any())
             {
-
                 foreach (JobInstance jobInstance in lastInstances)
                 {
                     IList<JobExecution> jobExecutions = jobExplorer.GetJobExecutions(jobInstance);
@@ -225,16 +238,16 @@ namespace Summer.Batch.Core
                     {
                         continue;
                     }
-                    executions.AddRange(jobExecutions.Where(jobExecution => jobExecution.Status.IsGreaterThan(minStatus)));
+
+                    executions.AddRange(
+                        jobExecutions.Where(jobExecution => jobExecution.Status.IsGreaterThan(minStatus)));
                 }
 
                 start += count;
                 lastInstances = jobExplorer.GetJobInstances(jobIdentifier, start, count);
-
             }
 
             return executions;
-
         }
 
         /// <summary>
@@ -246,10 +259,12 @@ namespace Summer.Batch.Core
             /// Success enum litteral
             /// </summary>
             Success = 0,
+
             /// <summary>
             /// Failed enum litteral
             /// </summary>
             Failed = 1,
+
             /// <summary>
             /// InvalidOption enum litteral
             /// </summary>

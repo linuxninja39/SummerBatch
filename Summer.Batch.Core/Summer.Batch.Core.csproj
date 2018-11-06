@@ -133,6 +133,7 @@
     <Compile Include="Core\Step\Tasklet\IPowerShellExitCodeMapper.cs" />
     <Compile Include="Core\Step\Tasklet\PowerShellExitCodeMapper.cs" />
     <Compile Include="Core\Step\Tasklet\PowerShellTasklet.cs" />
+    <Compile Include="Core\Unity\AttributeJobParser.cs" />
     <Compile Include="Core\Unity\Injection\JobContextDependencyResolverPolicy.cs">
       <SubType>Code</SubType>
     </Compile>
