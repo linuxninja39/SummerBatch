@@ -46,6 +46,7 @@ namespace Summer.Batch.Core
 
         public static JobExecution Start(XmlJob job, UnityLoader loader)
         {
+            var testJob = XmlJobParser.LoadJob("Batch/MyFirstBatch.xml");
             loader.Job = job;
             var jobOperator = (SimpleJobOperator) BatchRuntime.GetJobOperator(loader);
             var executionId = jobOperator.StartNextInstance(job.Id);
